@@ -26,3 +26,7 @@ npm run check   # lint, typecheck, unit tests, integration tests
 Husky runs lint-staged (ESLint + Prettier), typecheck and unit tests on every commit. GitHub Actions runs the full check on pull requests and pushes to `main`.
 
 Branch protection for `main` (require the `check` job to pass before merging) is a GitHub setting and is turned on in the repository settings, not in code.
+
+## Credits
+
+The `grill-me` and `grilling` skills in `.claude/skills/` are adapted from [Matt Pocock's skills](https://github.com/mattpocock/skills).

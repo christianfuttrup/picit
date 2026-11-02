@@ -39,9 +39,8 @@ Node.js + TypeScript service for managing shipments. Business rules and data int
 
 - Foreign keys are on (`PRAGMA foreign_keys = ON`) for every connection.
 - Every write that touches more than one table runs in one transaction.
-- Updates to a shipment check `version` in the WHERE clause and increment it. Zero rows updated means a conflict (409).
+- Updates to a shipment check `revision` in the WHERE clause and increment it. Zero rows updated means a conflict (409).
 - Every change to a shipment writes a row to `shipment_audit` (shipment id, field, old value, new value, actor, timestamp) in the same transaction.
-- Every change other systems need to know about writes an event to `outbox` in the same transaction. Never call another system directly from a request.
 - Write endpoints require an `Idempotency-Key` header. A repeated key returns the stored response without changing data again.
 - Rules the data must never break (allowed statuses, unique keys, references) are also enforced by database constraints.
 - Migrations only add things. Never rename or drop in the same release as the code that stops using it.
@@ -50,10 +49,10 @@ Node.js + TypeScript service for managing shipments. Business rules and data int
 ## Errors
 
 - Rule violations return 422 with a machine-readable `code` and a readable `message`.
-- Version conflicts return 409. Unknown shipment returns 404. Invalid input returns 400.
+- Revision conflicts return 409. Unknown shipment returns 404. Invalid input returns 400.
 - Unexpected errors are logged and return 500 without internal details.
 
 ## Out of scope for now
 
 - Authentication. The actor comes from the `X-Actor` header.
-- Publishing outbox events. Writing them is in scope; the publisher is not.
+- Telling other systems about changes. Note where it would happen with a `TODO(integration)` comment.

@@ -18,8 +18,8 @@ You review changes to shipment-service. You never edit files, never run tests, n
 **Data integrity**
 
 - A write touching more than one table runs inside one transaction (`db.transaction`). Flag any multi-table write outside one.
-- Updates to `shipments` have `AND version = ?` in the WHERE clause, increment `version`, and treat zero changed rows as a conflict (409).
-- Audit rows (`shipment_audit`) and outbox rows (`outbox`) are written in the same transaction as the change they describe. Flag any written before or after the transaction, or by a separate call.
+- Updates to `shipments` have `AND revision = ?` in the WHERE clause, increment `revision`, and treat zero changed rows as a conflict (409).
+- Audit rows (`shipment_audit`) are written in the same transaction as the change they describe. Flag any written before or after the transaction, or by a separate call.
 - Idempotency: write endpoints require `Idempotency-Key`; a repeated key returns the stored response and changes nothing; keys expire through the injected clock.
 - Rules the data must never break are also enforced by database constraints, not only in code.
 - Foreign keys stay on for every connection.
@@ -35,7 +35,7 @@ You review changes to shipment-service. You never edit files, never run tests, n
 - Operations valid in one state accept only that state's type from the discriminated union.
 - External input is parsed once at the edge into branded types.
 - No `any`, no non-null assertions (`!`), no unchecked casts that bypass the union.
-- HTTP mapping: rule violation 422 with `code` and `message`, version conflict 409, unknown shipment 404, invalid input 400, unexpected error 500 without internals.
+- HTTP mapping: rule violation 422 with `code` and `message`, revision conflict 409, unknown shipment 404, invalid input 400, unexpected error 500 without internals.
 - An existing endpoint's response shape does not change.
 
 **Architecture**
@@ -43,7 +43,7 @@ You review changes to shipment-service. You never edit files, never run tests, n
 - No business logic in `src/routes/`. Routes parse, call the domain, map results to status codes.
 - No `Date.now()`, `new Date()`, timers, Express, or database imports in `src/domain/`. Time comes from `Clock`.
 - All SQL lives in `src/db/`. Repository functions take the db handle.
-- No call to another system from a request. Events go to `outbox`.
+- No call to another system from a request. A `TODO(integration)` comment marks where one would go.
 
 **Tests**
 
@@ -54,7 +54,7 @@ You review changes to shipment-service. You never edit files, never run tests, n
 
 ## Severity
 
-- **Critical:** do not merge. Data loss or corruption risk, a destructive migration, a broken transaction boundary, a missing version check, a rule only enforced in the happy path.
+- **Critical:** do not merge. Data loss or corruption risk, a destructive migration, a broken transaction boundary, a missing revision check, a rule only enforced in the happy path.
 - **Major:** should be fixed before merge. A CLAUDE.md rule broken without immediate data risk, a missing AC test, logic in a route.
 - **Minor:** worth fixing, not blocking. Naming, small duplication, weak test assertions.
 - **Informational:** observations, assumptions, follow-ups. No action needed to merge.
