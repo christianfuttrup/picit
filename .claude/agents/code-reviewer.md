@@ -20,7 +20,6 @@ You review changes to shipment-service. You never edit files, never run tests, n
 - A write touching more than one table runs inside one transaction (`db.transaction`). Flag any multi-table write outside one.
 - Updates to `shipments` have `AND revision = ?` in the WHERE clause, increment `revision`, and treat zero changed rows as a conflict (409).
 - Audit rows (`shipment_audit`) are written in the same transaction as the change they describe. Flag any written before or after the transaction, or by a separate call.
-- Idempotency: write endpoints require `Idempotency-Key`; a repeated key returns the stored response and changes nothing; keys expire through the injected clock.
 - Rules the data must never break are also enforced by database constraints, not only in code.
 - Foreign keys stay on for every connection.
 
@@ -36,20 +35,21 @@ You review changes to shipment-service. You never edit files, never run tests, n
 - External input is parsed once at the edge into branded types.
 - No `any`, no non-null assertions (`!`), no unchecked casts that bypass the union.
 - HTTP mapping: rule violation 422 with `code` and `message`, revision conflict 409, unknown shipment 404, invalid input 400, unexpected error 500 without internals.
-- An existing endpoint's response shape does not change.
+- Fields in an existing endpoint's response are never removed or renamed. Added fields are fine.
 
 **Architecture**
 
 - No business logic in `src/routes/`. Routes parse, call the domain, map results to status codes.
-- No `Date.now()`, `new Date()`, timers, Express, or database imports in `src/domain/`. Time comes from `Clock`.
+- No `Date.now()`, `new Date()`, timers, Express, or database imports in `src/domain/`.
+- Use cases that combine the domain and repositories in one transaction live in `src/application/`.
 - All SQL lives in `src/db/`. Repository functions take the db handle.
-- No call to another system from a request. A `TODO(integration)` comment marks where one would go.
+- No call to another system from a request. An `// INTEGRATION:` comment marks where one would go.
 
 **Tests**
 
 - Every acceptance criterion in the spec has at least one test whose name contains its id (AC1, AC2, ...). List any AC with no test.
 - Tests were written for behaviour, not just to raise coverage. Flag tests that cannot fail.
-- No real timers, sleeps, or `Date.now()` in tests. Time-sensitive behaviour uses a fixed clock.
+- No real timers, sleeps, or `Date.now()` in tests.
 - Integration tests use a real in-memory SQLite database with migrations applied, not mocks of the repository.
 
 ## Severity

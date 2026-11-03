@@ -29,4 +29,4 @@ Branch protection for `main` (require the `check` job to pass before merging) is
 
 ## Credits
 
-The `grill-me` and `grilling` skills in `.claude/skills/` are adapted from [Matt Pocock's skills](https://github.com/mattpocock/skills).
+The `grill-me` and `grilling` skills in `.claude/skills/` are adapted from [Matt Pocock's skills](https://github.com/mattpocock/skills), used under the MIT License. See `.claude/skills/LICENSE`.

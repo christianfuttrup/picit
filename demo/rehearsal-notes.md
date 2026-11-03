@@ -1,5 +1,7 @@
 # Rehearsal notes
 
+> These notes are from an earlier version of the prompt with six rules, including an idempotency key and key expiry. The demo now uses four rules (AC1 to AC4). The idempotency key is named as a next step instead.
+
 Run on the local branch `rehearsal` (never pushed, never merged), using `demo/prompt.md` with AC1 to AC6. The work is at commit `611bef6` on that branch if you want to look at one possible outcome: `git show rehearsal`.
 
 ## What happened
