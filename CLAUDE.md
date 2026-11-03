@@ -1,5 +1,3 @@
-TODO(Christian): rewrite in my own words
-
 # shipment-service
 
 Node.js + TypeScript service for managing shipments. Business rules and data integrity matter more than speed here. When in doubt, ask.
@@ -15,10 +13,9 @@ Node.js + TypeScript service for managing shipments. Business rules and data int
 
 ## How to work in this repo
 
-- Plan before code. For any change, ask me about anything unclear, then write the spec to `specs/<change>.md` with numbered acceptance criteria (AC1, AC2, ...).
+- Grill me before coding. For any change, use me about anything unclear, then write the spec to `specs/<change>.md` with numbered acceptance criteria (AC1, AC2, ...).
 - Tests first. Write failing tests for each acceptance criterion before the code. Put the AC id in the test name.
 - Before you say a task is done, run `npm run lint`, `npm run typecheck`, `npm test` and `npm run test:integration`. Show me the output.
-- Before writing any spec or code for a change, run the grill-me skill (a hook nudges this) and wait for my answers.
 - Keep changes small. Don't touch files the task doesn't need.
 
 ## Architecture
@@ -39,7 +36,7 @@ Node.js + TypeScript service for managing shipments. Business rules and data int
 
 - Foreign keys are on (`PRAGMA foreign_keys = ON`) for every connection.
 - Every write that touches more than one table runs in one transaction.
-- Updates to a shipment check `revision` in the WHERE clause and increment it. Zero rows updated means a conflict (409).
+- Updates to a shipment check `revision` in the WHERE clause and increment it. Zero rows updated means a conflict (error 409).
 - Every change to a shipment writes a row to `shipment_audit` (shipment id, field, old value, new value, actor, timestamp) in the same transaction.
 - Write endpoints require an `Idempotency-Key` header. A repeated key returns the stored response without changing data again.
 - Rules the data must never break (allowed statuses, unique keys, references) are also enforced by database constraints.
@@ -51,8 +48,3 @@ Node.js + TypeScript service for managing shipments. Business rules and data int
 - Rule violations return 422 with a machine-readable `code` and a readable `message`.
 - Revision conflicts return 409. Unknown shipment returns 404. Invalid input returns 400.
 - Unexpected errors are logged and return 500 without internal details.
-
-## Out of scope for now
-
-- Authentication. The actor comes from the `X-Actor` header.
-- Telling other systems about changes. Note where it would happen with a `TODO(integration)` comment.

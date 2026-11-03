@@ -1,41 +1,41 @@
 {
-  "name": "shipment-service",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "engines": {
-    "node": ">=22.18"
-  },
-  "scripts": {
-    "dev": "node --watch src/server.ts",
-    "db:migrate": "node scripts/migrate.ts",
-    "db:seed": "node scripts/seed.ts",
-    "lint": "eslint .",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run test/unit",
-    "test:integration": "vitest run test/integration",
-    "check": "npm run lint && npm run typecheck && npm test && npm run test:integration",
-    "prepare": "husky"
-  },
-  "dependencies": {
-    "better-sqlite3": "^13.0.3",
-    "express": "^5.3.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "@types/better-sqlite3": "^9.6.0",
-    "@types/express": "^5.0.6",
-    "@types/node": "^26.6.6",
-    "@types/supertest": "^7.2.1",
-    "eslint": "^10.14.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-sonarjs": "^4.2.2",
-    "husky": "^9.1.7",
-    "lint-staged": "^17.6.0",
-    "prettier": "^3.9.10",
-    "supertest": "^7.3.1",
-    "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.1",
-    "vitest": "^4.1.12"
-  }
+    "name": "shipment-service",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "engines": {
+        "node": ">=22.18"
+    },
+    "scripts": {
+        "dev": "node --watch src/server.ts",
+        "db:migrate": "node scripts/migrate.ts",
+        "db:seed": "node scripts/seed.ts",
+        "lint": "eslint .",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest run test/unit",
+        "test:integration": "vitest run test/integration",
+        "check": "npm run lint && npm run typecheck && npm test && npm run test:integration",
+        "prepare": "husky"
+    },
+    "dependencies": {
+        "better-sqlite3": "^13.0.3",
+        "express": "^5.3.0"
+    },
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "@types/better-sqlite3": "^9.6.0",
+        "@types/express": "^5.0.6",
+        "@types/node": "^26.6.6",
+        "@types/supertest": "^7.2.1",
+        "eslint": "^10.14.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-sonarjs": "^4.2.2",
+        "husky": "^9.1.7",
+        "lint-staged": "^17.6.0",
+        "prettier": "^3.9.10",
+        "supertest": "^7.3.1",
+        "typescript": "^6.0.3",
+        "typescript-eslint": "^8.72.1",
+        "vitest": "^4.1.12"
+    }
 }
