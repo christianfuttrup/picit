@@ -9,15 +9,19 @@ export function shipmentsRouter(db: Db): Router {
 
     router.get('/shipments/:id', (req, res) => {
         const { id } = req.params;
+
         if (!UUID.test(id)) {
             res.status(400).json({ code: 'INVALID_ID', message: 'Shipment id must be a UUID' });
             return;
         }
+
         const shipment = findById(db, id);
+
         if (!shipment) {
             res.status(404).json({ code: 'NOT_FOUND', message: 'Shipment not found' });
             return;
         }
+
         res.json(shipment);
     });
 

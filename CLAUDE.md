@@ -1,6 +1,6 @@
 # shipment-service
 
-Node.js + TypeScript service for managing shipments. Business rules and data integrity matter more than speed here. When in doubt, ask.
+Node.js + TypeScript service for managing shipments. Business rules and data integrity matter more than speed here. **When in doubt, ask.**
 
 ## Stack
 

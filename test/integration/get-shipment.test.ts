@@ -12,6 +12,7 @@ beforeEach(() => {
 describe('GET /shipments/:id', () => {
     it('returns a seeded shipment', async () => {
         const res = await request(buildApp(db)).get(`/shipments/${SEEDED.booked}`);
+
         expect(res.status).toBe(200);
         expect(res.body).toMatchObject({
             id: SEEDED.booked,
@@ -26,12 +27,14 @@ describe('GET /shipments/:id', () => {
         const res = await request(buildApp(db)).get(
             '/shipments/99999999-9999-4999-8999-999999999999',
         );
+
         expect(res.status).toBe(404);
         expect(res.body.code).toBe('NOT_FOUND');
     });
 
     it('returns 400 for a malformed id', async () => {
         const res = await request(buildApp(db)).get('/shipments/not-a-uuid');
+
         expect(res.status).toBe(400);
         expect(res.body.code).toBe('INVALID_ID');
     });
