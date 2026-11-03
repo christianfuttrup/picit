@@ -7,6 +7,7 @@ export interface ShipmentRow {
     origin: string;
     destination: string;
     status: string;
+    revision: number;
     created_at: string;
 }
 
@@ -17,6 +18,7 @@ export function rowToShipment(row: ShipmentRow): Shipment {
         reference: row.reference,
         origin: row.origin,
         destination: row.destination,
+        revision: row.revision,
         createdAt: row.created_at,
     };
     switch (row.status) {
@@ -33,8 +35,23 @@ export function rowToShipment(row: ShipmentRow): Shipment {
 export function findById(db: Db, id: string): Shipment | undefined {
     const row = db
         .prepare<[string], ShipmentRow>(
-            'SELECT id, reference, origin, destination, status, created_at FROM shipments WHERE id = ?',
+            'SELECT id, reference, origin, destination, status, revision, created_at FROM shipments WHERE id = ?',
         )
         .get(id);
     return row ? rowToShipment(row) : undefined;
+}
+
+/** Sets the destination and bumps the revision. Returns false when `expectedRevision` is stale. */
+export function updateDestination(
+    db: Db,
+    id: string,
+    destination: string,
+    expectedRevision: number,
+): boolean {
+    const { changes } = db
+        .prepare<[string, string, number]>(
+            'UPDATE shipments SET destination = ?, revision = revision + 1 WHERE id = ? AND revision = ?',
+        )
+        .run(destination, id, expectedRevision);
+    return changes === 1;
 }

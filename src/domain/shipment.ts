@@ -3,6 +3,7 @@ interface ShipmentBase {
     reference: string;
     origin: string;
     destination: string;
+    revision: number;
     createdAt: string;
 }
 

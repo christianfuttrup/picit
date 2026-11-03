@@ -7,6 +7,7 @@ const row = {
     origin: 'DKAAR',
     destination: 'DEHAM',
     status: 'BOOKED',
+    revision: 1,
     created_at: '2026-10-01T08:00:00.000Z',
 };
 
@@ -18,6 +19,7 @@ describe('rowToShipment', () => {
             origin: 'DKAAR',
             destination: 'DEHAM',
             status: 'BOOKED',
+            revision: 1,
             createdAt: '2026-10-01T08:00:00.000Z',
         });
     });
